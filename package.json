@@ -1,29 +1,40 @@
 {
-  "name": "lottery-bsc",
+  "name": "busd_stacking",
   "version": "1.0.0",
-  "description": "Simple lottery contract on bsc",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
+  "description": "Staking and Earn BUSD",
+  "private": true,
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.2.3",
+    "dotenv": "^9.0.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "keywords": [
-    "BSC"
-  ],
-  "author": "Kowsik Gelli",
-  "license": "ISC",
-  "dependencies": {
-    "@truffle/hdwallet-provider": "1.2.3",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "chai-bignumber": "^3.0.0"
-  }
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "author": "CuiApp",
+  "license": "ISC"
 }
