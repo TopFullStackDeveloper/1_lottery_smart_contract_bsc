@@ -19,6 +19,9 @@ contract Lottery {
     // add mapping
     // mapping(address => bool) playerEntered;
 
+    // add event
+    event PickWinner(address indexed winner, uint balance);
+
     // constructor
     constructor() {
         // define administrator with deployer
@@ -45,8 +48,13 @@ contract Lottery {
     // enter the game
     function enter() public payable onGame{
         // require(!playerEntered[msg.sender], "You have already taken the ticket");
-        require(msg.value == target_amount,"the amount doesnot match with standard amount");
+        require(msg.value == ticket_price,"the price doesnot match with standard price");
         players.push(msg.sender);
+
+        target_amount = target_amount - 1;
+        if(target_amount == 0) {
+            isGameEnded = true;
+        }
         // playerEntered[msg.sender] = true;
     }
 
@@ -58,8 +66,9 @@ contract Lottery {
         // before init newly, previous game should be finished.
         require(isGameEnded, "Game is running now.");
 
-        target_amount = _ticketAmount;
         ticket_price = _ticketPrice;
+        target_amount = _ticketAmount;
+        isGameEnded = false;
     }
 
     function random() private view returns (uint) {
@@ -72,10 +81,17 @@ contract Lottery {
         uint index = random() % players.length;
         address payable winner = payable(players[index]);
         players = new address[](0);
+        uint winBalance = address(this).balance;
         winner.transfer(address(this).balance);
+
+        emit PickWinner(winner, winBalance);
     }
 
-    function getPlayers()public onGame view returns(address[] memory){
+    function getPlayers()public view returns(address[] memory){
         return players;
+    }
+
+    function getPlayerNumber() public view returns(uint) {
+        return players.length;
     }
 }

@@ -1,5 +1,11 @@
+require('babel-register');
+require('babel-polyfill');
+
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const mnemonic = "Your mnemonic"
+// const mnemonic = "Your mnemonic"
+const fs = require('fs');
+const mnemonic = fs.readFileSync(".secret").toString().trim();
+
 module.exports = {
   networks: {
     development: {
@@ -31,7 +37,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "^0.6.0", // A version or constraint - Ex. "^0.5.0"
+      version: ">=0.5.0 <0.9.0", // A version or constraint - Ex. "^0.5.0"
     }
   }
 }
