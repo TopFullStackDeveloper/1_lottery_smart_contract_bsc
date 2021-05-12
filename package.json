@@ -1,0 +1,20 @@
+{
+  "name": "lottery-bsc",
+  "version": "1.0.0",
+  "description": "Simple lottery contract on bsc",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "BSC"
+  ],
+  "author": "Kowsik Gelli",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.2.6"
+  }
+}
