@@ -15,7 +15,6 @@ contract('Lottery', ([deployer, user]) => {
 
     beforeEach(async () => {
         lottery = await Lottery.new()
-        // admin_address = await lottery.manager()
     })
 
     describe('testing lottery contract ...', function() {

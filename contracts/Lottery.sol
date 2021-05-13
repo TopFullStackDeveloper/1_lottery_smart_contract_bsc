@@ -7,6 +7,9 @@ contract Lottery {
     address public manager;
     // lottery players
     address[] public  players;
+    // lottery players
+    address[] public  winners;
+
     // target amount of tickets
     uint public target_amount;
     // price of ticket
@@ -15,6 +18,9 @@ contract Lottery {
     uint public max_ticket_price;
     // check if game finished
     bool public isGameEnded = true;
+    bool public isReadyPickWinner = false;
+    uint public startedTime = 0;
+
 
     // add mapping
     // mapping(address => bool) playerEntered;
@@ -36,7 +42,7 @@ contract Lottery {
     }
     // middleware to check if game is on or off
     modifier onGame() {
-        require(!isGameEnded, "Game has not started yet.");
+        require(!isGameEnded && !isReadyPickWinner, "Game has not started yet.");
         _;
     }
 
@@ -49,13 +55,13 @@ contract Lottery {
     function enter() public payable onGame{
         // require(!playerEntered[msg.sender], "You have already taken the ticket");
         require(msg.value == ticket_price,"the price doesnot match with standard price");
+        require(target_amount > 0, "the whole tickets has been sold");
         players.push(msg.sender);
 
         target_amount = target_amount - 1;
         if(target_amount == 0) {
-            isGameEnded = true;
+            isReadyPickWinner = true;
         }
-        // playerEntered[msg.sender] = true;
     }
 
     // initialize the game
@@ -66,9 +72,12 @@ contract Lottery {
         // before init newly, previous game should be finished.
         require(isGameEnded, "Game is running now.");
 
+        startedTime = block.timestamp;
+
         ticket_price = _ticketPrice;
         target_amount = _ticketAmount;
         isGameEnded = false;
+        isReadyPickWinner = false;
     }
 
     function random() private view returns (uint) {
@@ -76,13 +85,15 @@ contract Lottery {
     }
 
     function pickWinner() public restricted {
-        require(isGameEnded, "Game is running now.");
+        require(isReadyPickWinner, "Game is running now.");
 
         uint index = random() % players.length;
         address payable winner = payable(players[index]);
         players = new address[](0);
         uint winBalance = address(this).balance;
         winner.transfer(address(this).balance);
+        isGameEnded = true;
+        winners.push(winner);
 
         emit PickWinner(winner, winBalance);
     }
@@ -90,8 +101,22 @@ contract Lottery {
     function getPlayers()public view returns(address[] memory){
         return players;
     }
+    
+    function getWinners()public view returns(address[] memory){
+        return winners;
+    }
 
     function getPlayerNumber() public view returns(uint) {
         return players.length;
+    }
+
+    function getStartedTime() public view returns(uint) {
+        return block.timestamp - startedTime;
+    }
+
+    function getPercent() public view returns(uint) {
+        if(isGameEnded) return 0;
+        if(isReadyPickWinner) return 100;
+        return getPlayerNumber() * 100 / (target_amount + getPlayerNumber());
     }
 }

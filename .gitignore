@@ -9,6 +9,7 @@
 /.secret
 # testing
 /coverage
+/src/abis
 
 # production
 /build
