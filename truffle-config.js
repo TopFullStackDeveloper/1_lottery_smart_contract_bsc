@@ -16,8 +16,8 @@ module.exports = {
     testnet: {
       provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
       network_id: 97,
-      confirmations: 10,
-      timeoutBlocks: 200,
+      // confirmations: 10,
+      // timeoutBlocks: 200,
       skipDryRun: true
     },
     bsc: {
@@ -38,7 +38,11 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: ">=0.5.0 <0.9.0", // A version or constraint - Ex. "^0.5.0"
+      version: ">=0.5.0 <0.9.0", // A version or constraint - Ex. "^0.5.0",
+      optimizer: {
+        enabled: true,
+        runs: 200
+      },
     }
   }
 }
